@@ -13,7 +13,7 @@ echo [37mCopyright (c) 1992-2026 by FOXNET[0m
 echo [37mhttps://software.foxnet.ir[0m
 echo [37m#################################[0m
 echo.
-echo [32mType "hlp" for command list.[0m
+echo [32mType "?" for command list.[0m
 echo.   
 
 :: -------- Command History Setup -----------
@@ -21,8 +21,9 @@ set "history="
 
 :loop
 :: Pre-prompt message
-echo [32mCBOX> type hlp for command list[0m
-set /p cmdInput=[91mCBOX ^> [0m
+echo [31;44mCBOX> type ? for command list[0m
+set /p cmdInput=[31;44mCBOX ^> [0m
+
 
 :: Save history
 if defined cmdInput (
@@ -34,7 +35,7 @@ if /i "%cmdInput%"=="exit" goto end
 if /i "%cmdInput%"=="quit" goto end
 
 :: Help Command
-if /i "%cmdInput%"=="hlp" (
+if /i "%cmdInput%"=="?" (
     call :helpScreen
     goto loop
 )
@@ -67,7 +68,7 @@ if /i "!cmd!"=="who" (
 :: ---------- SYSTEM INFORMATION ----------
 if /i "!cmd!"=="ver" (
     call :showHelp "ver" "Show CBOX version" "ver"
-    echo [33mDOXBOX Version 1.0 by FOXNET[0m
+    echo [33mCBOX Version 1.0 by FOXNET[0m
     systeminfo | findstr /B /C:"OS Version"
     goto :eof
 )
@@ -246,9 +247,11 @@ if /i "!cmd!"=="explore" (
 )
 
 :: ---------- DEFAULT: Run normal Windows command ----------
-call :showHelp "!cmd!" "Running normal command" "!cmd!"
+ 
+call :showHelp "!cmd!" "THIS IS NOT A CBOX COMMAND " "!cmd!"
 echo [33mOutput:[0m
 !cmd!
+echo.
 goto :eof
 
 :: ============================================
@@ -269,12 +272,12 @@ exit /b
 :helpScreen
 cls
 echo.
-echo [37m=========================================[0m
-echo [37m   CBOX v1.0 HELP[0m
+echo [37m===============CBOX v1.0 HELP ======================[0m
 echo.
+echo [37mShort commands for common tasks by CMD  [0m
 echo [37mCopyright (c) 1992-2026 by FOXNET[0m
 echo [37mhttps://software.foxnet.ir[0m
-echo [37m=========================================[0m
+echo [37m====================================================[0m
 echo.
 echo [32mls[0m            - List files and folders
 echo [32mp [host][0m      - Ping host
@@ -298,7 +301,7 @@ echo [32marp[0m           - Show ARP cache
 echo [32mnslookup[0m      - Query DNS servers
 echo [32mcl[0m            - Clear screen
 echo [32mexplore[0m       - Built-in file explorer
-echo [32mhlp[0m           - Show this help screen
+echo [32m?[0m           - Show this help screen
 echo [32mexit[0m          - Quit CBOX
 echo.
 
@@ -323,3 +326,4 @@ echo.
 echo [37mExiting CBOX...[0m
 echo.
 exit /b
+
