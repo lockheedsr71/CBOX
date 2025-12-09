@@ -21,8 +21,11 @@ set "history="
 
 :loop
 :: Pre-prompt message
+echo.
 echo [31;44mCBOX> type ? for command list[0m
-set /p cmdInput=[31;44mCBOX ^> [0m
+for /f "delims=" %%d in ('cd') do set "currentDir=%%d"
+echo [37;44mCurrent Directory: !currentDir![0m
+set /p cmdInput=[31mCBOX ^> [0m
 
 
 :: Save history
@@ -119,16 +122,36 @@ if /i "!cmd!"=="dirfree" (
     goto :eof
 )
 
+
+:: ---------- DIR COMMANDS ----------
+if /i "!cmd!"=="ls" (
+    call :showHelp "ls" "List files and folders" "ls [path]"
+    echo [33mListing directory:[0m
+    dir
+    goto :eof
+)
+
+echo !cmd! | findstr /b /i "ls " >nul
+if !errorlevel!==0 (
+    for /f "tokens=2*" %%a in ("!cmd!") do (
+        call :showHelp "ls" "List files and folders" "ls [path]"
+        echo [33mListing directory: %%a[0m
+        dir %%a
+    )
+    goto :eof
+)
+
 :: ---------- PING ----------
-echo !cmd! | findstr /b /i "p " >nul
+echo !cmd! | findstr /b /i "pi " >nul
 if !errorlevel!==0 (
     for /f "tokens=2" %%a in ("!cmd!") do (
         call :showHelp "p" "Ping a host" "p [host]"
-        echo [33mPinging %%a...[0m
+        echo [33mPinging %%a...[0m
         ping %%a
     )
     goto :eof
 )
+
 
 :: ---------- PING WITH COUNT ----------
 echo !cmd! | findstr /b /i "pnc " >nul
@@ -186,10 +209,10 @@ if !errorlevel!==0 (
 )
 
 :: ---------- MAKE DIRECTORY ----------
-echo !cmd! | findstr /b /i "mdx " >nul
+echo !cmd! | findstr /b /i "mkd " >nul
 if !errorlevel!==0 (
     for /f "tokens=2" %%a in ("!cmd!") do (
-        call :showHelp "mdx" "Create directory" "mdx folder"
+        call :showHelp "mkd" "Create directory" "mkd folder"
         echo [33mCreating directory %%a...[0m
         mkdir "%%a"
     )
@@ -203,6 +226,15 @@ if /i "!cmd!"=="ip" (
     ipconfig
     goto :eof
 )
+
+:: ---------- IP CONFIG all----------
+if /i "!cmd!"=="ipa" (
+    call :showHelp "ipa" "Show network info for all " "ipa"
+    echo [33mNetwork info:[0m
+    ipconfig
+    goto :eof
+)
+
 
 :: ---------- TASK LIST ----------
 if /i "!cmd!"=="ps" (
@@ -232,8 +264,8 @@ if /i "!cmd!"=="df" (
 )
 
 :: ---------- SYSTEM INFO ----------
-if /i "!cmd!"=="sys" (
-    call :showHelp "sys" "Show system info" "sys"
+if /i "!cmd!"=="info" (
+    call :showHelp "info" "Show system info" "info"
     echo [33mSystem info:[0m
     systeminfo
     goto :eof
@@ -259,10 +291,10 @@ goto :eof
 :: ============================================
 :showHelp
 echo.
-echo [32m***************** %~1 help ******************[0m
+echo [32m***************** %~1 Help ******************[0m
 echo [36mDescription : %~2[0m
 echo [36mCommand     : %~3[0m
-echo [32m******************************************[0m
+echo [32m*********************************************[0m
 echo.
 exit /b
 
