@@ -12,9 +12,7 @@ echo [37mWelcome to CBOX v1.0[0m
 echo [37mCopyright (c) 1992-2026 by FOXNET[0m
 echo [37mhttps://software.foxnet.ir[0m
 echo [37m#################################[0m
-echo.
 echo [32mType "?" for command list.[0m
-echo.   
 
 :: -------- Command History Setup -----------
 set "history="
@@ -24,8 +22,8 @@ set "history="
 echo.
 echo [31;44mCBOX> type ? for command list[0m
 for /f "delims=" %%d in ('cd') do set "currentDir=%%d"
-echo [37;44mCurrent Directory: !currentDir![0m
-set /p cmdInput=[31mCBOX ^> [0m
+echo [30;46mCurrent Directory: !currentDir![0m
+set /p cmdInput=[94mCBOX ^> [0m
 
 
 :: Save history
@@ -126,7 +124,7 @@ if /i "!cmd!"=="dirfree" (
 :: ---------- DIR COMMANDS ----------
 if /i "!cmd!"=="ls" (
     call :showHelp "ls" "List files and folders" "ls [path]"
-    echo [33mListing directory:[0m
+    echo [33mListing directory:[0m
     dir
     goto :eof
 )
@@ -135,7 +133,7 @@ echo !cmd! | findstr /b /i "ls " >nul
 if !errorlevel!==0 (
     for /f "tokens=2*" %%a in ("!cmd!") do (
         call :showHelp "ls" "List files and folders" "ls [path]"
-        echo [33mListing directory: %%a[0m
+        echo [33mListing directory: %%a[0m
         dir %%a
     )
     goto :eof
@@ -144,33 +142,23 @@ if !errorlevel!==0 (
 :: ---------- PING ----------
 echo !cmd! | findstr /b /i "pi " >nul
 if !errorlevel!==0 (
-    for /f "tokens=2" %%a in ("!cmd!") do (
-        call :showHelp "p" "Ping a host" "p [host]"
-        echo [33mPinging %%a...[0m
-        ping %%a
+    for /f "tokens=2*" %%a in ("!cmd!") do (
+        call :showHelp "pi" "Ping a host" "pi [host] [-t or /? to see options]"
+        echo [33mPinging %%a with options %%b...[0m
+        ping %%a %%b
     )
     goto :eof
 )
 
 
-:: ---------- PING WITH COUNT ----------
-echo !cmd! | findstr /b /i "pnc " >nul
-if !errorlevel!==0 (
-    for /f "tokens=2,3" %%a in ("!cmd!") do (
-        call :showHelp "pnc" "Ping host with count" "pnc [host] [count]"
-        echo [33mPinging %%a %%b times...[0m
-        ping -n %%b %%a
-    )
-    goto :eof
-)
-
+ 
 :: ---------- TRACERT ----------
 echo !cmd! | findstr /b /i "tr " >nul
 if !errorlevel!==0 (
-    for /f "tokens=2" %%a in ("!cmd!") do (
-        call :showHelp "tr" "Trace route to a host" "tr [host]"
+    for /f "tokens=2*" %%a in ("!cmd!") do (
+        call :showHelp "tr" "Trace route to a host(No domain name resolve)" "tr [host]"
         echo [33mTracing route to %%a...[0m
-        tracert %%a
+        tracert -d %%a
     )
     goto :eof
 )
@@ -198,10 +186,10 @@ if !errorlevel!==0 (
 )
 
 :: ---------- DELETE ----------
-echo !cmd! | findstr /b /i "rm " >nul
+echo !cmd! | findstr /b /i "del " >nul
 if !errorlevel!==0 (
     for /f "tokens=2" %%a in ("!cmd!") do (
-        call :showHelp "rm" "Delete file" "rm filename"
+        call :showHelp "del" "Delete file" "del filename"
         echo [33mDeleting %%a...[0m
         del "%%a"
     )
@@ -218,6 +206,18 @@ if !errorlevel!==0 (
     )
     goto :eof
 )
+
+:: ---------- REMOVE DIRECTORY ----------
+echo !cmd! | findstr /b /i "rmd " >nul
+if !errorlevel!==0 (
+    for /f "tokens=2*" %%a in ("!cmd!") do (
+        call :showHelp "rmd" "Remove directory - Use /s to remove non-empty directories" "rmd [/s] dirname"
+        echo [33mRemoving directory %%a %%b...[0m
+        rd "%%a" %%b
+    )
+    goto :eof
+)
+
 
 :: ---------- IP CONFIG ----------
 if /i "!cmd!"=="ip" (
@@ -280,7 +280,7 @@ if /i "!cmd!"=="explore" (
 
 :: ---------- DEFAULT: Run normal Windows command ----------
  
-call :showHelp "!cmd!" "THIS IS NOT A CBOX COMMAND " "!cmd!"
+call :showHelp "[31m!cmd![0m" "[31mTHIS IS NOT A CBOX COMMAND[0m" "[31m!cmd![0m"
 echo [33mOutput:[0m
 !cmd!
 echo.
@@ -291,10 +291,10 @@ goto :eof
 :: ============================================
 :showHelp
 echo.
-echo [32m***************** %~1 Help ******************[0m
-echo [36mDescription : %~2[0m
+echo [32m***************** Command Help ******************[0m
 echo [36mCommand     : %~3[0m
-echo [32m*********************************************[0m
+echo [36mDescription : %~2[0m
+echo [32m*************************************************[0m
 echo.
 exit /b
 
@@ -311,30 +311,33 @@ echo [37mCopyright (c) 1992-2026 by FOXNET[0m
 echo [37mhttps://software.foxnet.ir[0m
 echo [37m====================================================[0m
 echo.
-echo [32mls[0m            - List files and folders
-echo [32mp [host][0m      - Ping host
-echo [32mtr [host][0m     - Trace route host
-echo [32mcp a b[0m        - Copy file a to b
-echo [32mmv a b[0m        - Move or rename file a to b
-echo [32mrm file[0m       - Delete file
-echo [32mmdx folder[0m    - Create directory
-echo [32mip[0m            - Show network info
-echo [32mipconfigall[0m   - Show detailed network info
-echo [32mps / task[0m     - Show running processes
-echo [32mkill [pid][0m    - Kill process by PID
-echo [32mendtask[0m       - Kill process by name
+echo [32mls [path][0m         - List files and folders (optional path)
+echo [32mpi [host][0m         - Ping host (supports additional ping options)
+echo [32mtr [host][0m         - Trace route to host (no domain name resolve)
+echo [32mcp src dst[0m       - Copy file from src to dst
+echo [32mmv src dst[0m       - Move or rename file from src to dst
+echo [32mdel file[0m        - Delete file
+echo [32mmkd folder[0m      - Create directory
+echo [32mrmd [/s] dirname[0m - Remove directory (use /s to remove non-empty)
+echo [32mdirfree[0m       - Show disk space of all drives (wmic)
 echo [32mdf[0m            - Show disk free info
-echo [32msys[0m           - Show system info
-echo [32msinfo[0m         - Quick system info (OS Name/Version/System Type)
-echo [32mwho[0m           - Show current user
-echo [32mver[0m           - Show Windows version
+echo [32mip[0m            - Show network info (ipconfig)
+echo [32mipa[0m           - Show network info for all (ipconfig)
+echo [32mtask[0m          - Show running tasks (tasklist)
+echo [32mps[0m            - Show running processes (tasklist)
+echo [32mkill [pid][0m     - Kill process by PID
+echo [32mendtask[0m       - Kill process by name
+echo [32minfo[0m           - Show system info (systeminfo)
+echo [32mwho[0m            - Show current user
+echo [32mver[0m            - Show CBOX version
 echo [32mnetstat[0m       - Show network connections
-echo [32marp[0m           - Show ARP cache
+echo [32marp[0m            - Show ARP cache
 echo [32mnslookup[0m      - Query DNS servers
-echo [32mcl[0m            - Clear screen
+echo [32mcl[0m             - Clear screen
 echo [32mexplore[0m       - Built-in file explorer
-echo [32m?[0m           - Show this help screen
-echo [32mexit[0m          - Quit CBOX
+echo [32m?[0m              - Show this help screen
+echo [32mexit / quit[0m   - Quit CBOX
+echo [32m(any other command)[0m - Runs as a normal Windows command
 echo.
 
 goto :eof
