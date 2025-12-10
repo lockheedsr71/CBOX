@@ -1,3 +1,36 @@
+::[Bat To Exe Converter]
+::
+::YAwzoRdxOk+EWAjk
+::fBw5plQjdCyDJGyX8VAjFDZ2ZziyNWiuE6cZ+9TB6viIpkhQZO4qdZ+W6byLLOxe+FDqO8R4gDRKlsxs
+::YAwzuBVtJxjWCl3EqQJgSA==
+::ZR4luwNxJguZRRnk
+::Yhs/ulQjdF+5
+::cxAkpRVqdFKZSDk=
+::cBs/ulQjdF+5
+::ZR41oxFsdFKZSTk=
+::eBoioBt6dFKZSDk=
+::cRo6pxp7LAbNWATEpCI=
+::egkzugNsPRvcWATEpCI=
+::dAsiuh18IRvcCxnZtBJQ
+::cRYluBh/LU+EWAnk
+::YxY4rhs+aU+IeA==
+::cxY6rQJ7JhzQF1fEqQJhZksaHGQ=
+::ZQ05rAF9IBncCkqN+0xwdVsFAlTMbAs=
+::ZQ05rAF9IAHYFVzEqQITCjRsLA==
+::eg0/rx1wNQPfEVWB+kM9LVsJDAeAM3P0A60ZiA==
+::fBEirQZwNQPfEVWB+kM9LVsJDAeAM3Pa
+::cRolqwZ3JBvQF1fEqQITKhRMDAKNLiutD7sY5//ojw==
+::dhA7uBVwLU+EWH+rzGwVHHs=
+::YQ03rBFzNR3SWATElA==
+::dhAmsQZ3MwfNWATEvGF5aEoNFVbPbjvoUPUe8ajdwNKph3ldc/AwbZ+Vug==
+::ZQ0/vhVqMQ3MEVWAtB9wSA==
+::Zg8zqx1/OA3MEVWAtB9wSA==
+::dhA7pRFwIByZRRmw/EsjaBJHDAXCOnm/A6Id+u27/OWBtlocRudxGA==
+::Zh4grVQjdCuDJHSdxFA/LwlVQRe+P2a+OrYe5/C16vKCwg==
+::YB416Ek+ZG8=
+::
+::
+::978f952a14a936cc963da21a135fa983
 @echo off
 cls
 setlocal enabledelayedexpansion
@@ -7,42 +40,47 @@ setlocal enabledelayedexpansion
 :: ===========================================
 
 :: -------- Banner ---------------
-echo [37m#################################[0m
-echo [37mWelcome to CBOX v1.0[0m
-echo [37mCopyright (c) 1992-2026 by FOXNET[0m
-echo [37mhttps://software.foxnet.ir[0m
-echo [37m#################################[0m
+echo [97;44m####################################################### [0m
+echo [97;44mCBOX v1.0 for Windows                                   [0m
+echo [97;44mAn Advanced command-line interface for Windows(CMD)     [0m
+echo [97;44mCopyright (c) 1992-2026 by FOXNET Group                 [0m
+echo [97;44mhttps://software.foxnet.ir                              [0m
+echo [97;44m####################################################### [0m
 echo [32mType "?" for command list.[0m
 
 :: -------- Command History Setup -----------
 set "history="
 
 :loop
-:: Pre-prompt message
+set "cmdInput="
+
+:: نمایش پرومپت و دایرکتوری فعلی
 echo.
 echo [31;44mCBOX> type ? for command list[0m
 for /f "delims=" %%d in ('cd') do set "currentDir=%%d"
 echo [30;46mCurrent Directory: !currentDir![0m
 set /p cmdInput=[94mCBOX ^> [0m
 
-
-:: Save history
-if defined cmdInput (
-    set history=!history!^|%cmdInput%
+if not defined cmdInput (
+    rem User pressed Enter with no input → do nothing, go back to prompt
+    goto loop
 )
 
-:: Exit
-if /i "%cmdInput%"=="exit" goto end
-if /i "%cmdInput%"=="quit" goto end
+:: ذخیره در تاریخچه
+set history=!history!^|!cmdInput!
 
-:: Help Command
-if /i "%cmdInput%"=="?" (
+:: دستورات خروج
+if /i "!cmdInput!"=="exit" goto end
+if /i "!cmdInput!"=="quit" goto end
+
+:: راهنما
+if /i "!cmdInput!"=="?" (
     call :helpScreen
     goto loop
 )
 
-:: Execute command
-call :executeCommand "%cmdInput%"
+:: اجرای دستور
+call :executeCommand "!cmdInput!"
 goto loop
 
 :: ============================================
@@ -305,7 +343,6 @@ exit /b
 cls
 echo.
 echo [37m===============CBOX v1.0 HELP ======================[0m
-echo.
 echo [37mShort commands for common tasks by CMD  [0m
 echo [37mCopyright (c) 1992-2026 by FOXNET[0m
 echo [37mhttps://software.foxnet.ir[0m
