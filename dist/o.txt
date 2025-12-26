@@ -1,0 +1,14 @@
+over a maximum of 20 hops:
+1    <1 ms    <1 ms    <1 ms  192.168.1.2 [90m[Internal Network][0m
+2    25 ms    25 ms    25 ms  2.182.64.1 [33m[Iran, Tehran | Telecommunication Company of Iran (AS58224)][0m
+Unable to resolve target system name post.ir.
+over a maximum of 20 hops:
+1    <1 ms    <1 ms    <1 ms  192.168.1.2 [90m[Internal Network][0m
+2    26 ms    25 ms    25 ms  2.182.64.1 [33m[Iran, Tehran | Telecommunication Company of Iran (AS58224)][0m
+3    26 ms    26 ms    31 ms  10.22.27.38 [90m[Internal Network][0m
+4     *        *        *     Request timed out.
+5    27 ms    26 ms    26 ms  10.220.221.5 [90m[Internal Network][0m
+6    25 ms    25 ms    26 ms  185.228.239.2 [33m[Iran, Tehran | Noyan Abr Arvan Co. ( Private Joint Stock) ()][0m
+7    27 ms    27 ms    28 ms  185.228.239.20 [33m[Iran, Tehran | Noyan Abr Arvan Co. ( Private Joint Stock) ()][0m
+8    28 ms    28 ms    29 ms  185.143.234.235 [33m[Iran, Tehran | Noyan Abr Arvan Co. ( Private Joint Stock) (AS205585)][0m
+Trace complete.
