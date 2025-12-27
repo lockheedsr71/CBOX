@@ -21,7 +21,7 @@ def clear_screen():
 
 def show_banner():
     print(f"{Colors.BLUE_BG}#######################################################{Colors.RESET}")
-    print(f"{Colors.BLUE_BG}CBOX v1.1  Secure CLI for Windows                     {Colors.RESET}")
+    print(f"{Colors.BLUE_BG}CBOX v1.0.1  Secure CLI for Windows                     {Colors.RESET}")
     print(f"{Colors.BLUE_BG}Advanced Command-Line Interface (Python Refactor)     {Colors.RESET}")
     print(f"{Colors.BLUE_BG}FOXNET Group | https://software.foxnet.ir              {Colors.RESET}")
     print(f"{Colors.BLUE_BG}#######################################################{Colors.RESET}")
