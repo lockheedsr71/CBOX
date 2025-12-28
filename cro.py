@@ -52,12 +52,12 @@ def get_ip_info(ip, show_geo=False, show_asn=False):
     return ""
 
 def main():
-    print(f"{Fore.LIGHTBLUE_EX}Troute Pro by FOXNET (CBOX Tools) {Style.RESET_ALL}")
+    print(f"{Fore.LIGHTBLUE_EX}Croute Pro by FOXNET (CBOX Tools) {Style.RESET_ALL}")
     
     parser = argparse.ArgumentParser(
         description="Professional Fast Traceroute with Optional Geo-IP & ASN Info",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog=f"Example:\n  python route.py 8.8.8.8 -g -a -o log.txt\n\n{Fore.LIGHTBLUE_EX}Troute by FOXNET{Style.RESET_ALL}"
+        epilog=f"Example:\n  cro 8.8.8.8 -g -a -o log.txt\n\n{Fore.LIGHTBLUE_EX}Croute by FOXNET{Style.RESET_ALL}"
     )
     parser.add_argument("target", nargs='?', default=None, help="Target IP or Domain")
     parser.add_argument("-m", "--max-hops", type=int, default=20, help="Maximum hops (default: 20)")
