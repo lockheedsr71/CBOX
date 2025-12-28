@@ -21,7 +21,7 @@ def clear_screen():
 
 def show_banner():
     print(f"{Colors.BLUE_BG}#######################################################{Colors.RESET}")
-    print(f"{Colors.BLUE_BG}CBOX v1.0.1  Secure CLI for Windows                     {Colors.RESET}")
+    print(f"{Colors.BLUE_BG}CBOX v1.0.2  Secure CLI for Windows                     {Colors.RESET}")
     print(f"{Colors.BLUE_BG}Advanced Command-Line Interface (Python Refactor)     {Colors.RESET}")
     print(f"{Colors.BLUE_BG}FOXNET Group | https://software.foxnet.ir              {Colors.RESET}")
     print(f"{Colors.BLUE_BG}#######################################################{Colors.RESET}")
@@ -74,10 +74,16 @@ class CommandExecutor:
 executor = CommandExecutor()
 
 def execute_command(user_input):
+    # جدا کردن دستور از آرگومان‌ها
     parts = user_input.split()
+    if not parts:
+        return
+
+    # تبدیل بخش اول به حروف کوچک برای مقایسه دقیق
     cmd = parts[0].lower()
     args = parts[1:]
 
+    # 1. مدیریت دستورات سیستمی حساس (تطابق دقیق)
     if cmd == "cl":
         clear_screen()
 
@@ -86,6 +92,7 @@ def execute_command(user_input):
         executor.run(f'dir "{path}"')
 
     elif cmd == "pi":
+        # اکنون فقط اگر کاربر دقیقاً کلمه pi را بزند اجرا می‌شود، نه pip
         if not args:
             print(f"{Colors.RED}Host required.{Colors.RESET}")
             return
@@ -115,7 +122,10 @@ def execute_command(user_input):
     elif cmd == "ver":
         executor.run('systeminfo | findstr /B /C:"OS Version"')
 
+    # 2. مدیریت دستورات متفرقه ویندوز (مثل pip, git, cd و غیره)
     else:
+        # اگر دستور در لیست بالا نبود، عیناً به سیستم پاس داده می‌شود
+        # حالا pip به درستی اینجا می‌آید و اجرا می‌شود
         print(f"{Colors.YELLOW}Passing command to system...{Colors.RESET}")
         executor.run(user_input)
 
