@@ -42,7 +42,7 @@ def get_ping_data(target, ttl=None, buffer_size=None):
         return {"status": "ERROR", "text": f"Error: {str(e)}"}
 
 def main():
-    parser = argparse.ArgumentParser(description="Advanced Tping by FOXNET")
+    parser = argparse.ArgumentParser(description="cpi Advanced ping by FOXNET")
     parser.add_argument("targets", nargs='*', help="One or more targets")
     parser.add_argument("-n", "--count", type=int, default=None, help="Number of pings")
     parser.add_argument("-i", "--interval", type=float, default=1.0, help="Interval (sec) between pings")
@@ -61,7 +61,7 @@ def main():
     is_multi = len(targets) >= 2
     col_width = 38
 
-    print(f"\n{Fore.LIGHTBLUE_EX}Tping Advanced Mode - {datetime.now().strftime('%Y-%m-%d')}{Style.RESET_ALL}")
+    print(f"\n{Fore.LIGHTBLUE_EX}cpi Advanced Mode - {datetime.now().strftime('%Y-%m-%d')}{Style.RESET_ALL}")
     if args.ttl: print(f"{Fore.WHITE}Custom TTL: {args.ttl}")
     if args.size: print(f"{Fore.WHITE}Buffer Size: {args.size} bytes")
 
