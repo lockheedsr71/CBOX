@@ -15,12 +15,27 @@ __pycache__/
 *.pyo
 *.pyd
 
+# Generated PyInstaller version resources (2exe.py writes these under build/)
+version_*_version_info.txt
+version_cpi.txt
+
+# -------------------------------
+# Test / tooling caches
+# -------------------------------
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
 # -------------------------------
 # Virtual environments
 # -------------------------------
 venv/
+.venv/
+env/
 .env/
-.env/
+ENV/
 
 # -------------------------------
 # OS / Editor junk

@@ -1,0 +1,93 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cbox"
+version = "1.2.0"
+description = "Secure CLI Toolkit for Windows: shell, network and filesystem tools"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+authors = [{ name = "FOXNET Group" }]
+keywords = ["cli", "windows", "network", "traceroute", "ping", "whois", "scanner"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: System Administrators",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Topic :: System :: Networking :: Monitoring",
+    "Topic :: System :: Systems Administration",
+]
+
+dependencies = [
+    "rich>=13.0",
+    "colorama>=0.4.6",
+    "requests>=2.31",
+    "psutil>=5.9",
+    "python-whois>=0.9",
+]
+
+[project.optional-dependencies]
+owner = ["pywin32>=306; sys_platform == 'win32'"]
+scan = ["scapy>=2.5"]
+build = ["pyinstaller>=6.0"]
+dev = ["pytest>=8.0", "pyinstaller>=6.0"]
+
+[project.urls]
+Homepage = "https://github.com/lockheedsr71/CBOX"
+Documentation = "https://software.foxnet.ir"
+
+[tool.setuptools]
+packages = ["cbox_core"]
+
+[tool.setuptools.scripts]
+cbox = "cbox:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 110
+target-version = "py38"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "SIM", "UP", "RUF", "PL", "S", "BLE"]
+ignore = [
+    "E501",    # long lines are unavoidable in the banner/help tables
+    "RUF059",  # rich_toolkit() is unpacked positionally; _ is deliberate
+    "BLE001",  # `except Exception` is deliberate: one bad row must not kill a dashboard
+    "S110",    # best-effort probes (geo lookup, MAC vendor) intentionally swallow
+    "S112",    # ...and so does skipping an unreachable host mid-scan
+    "PLW1510", # subprocess exit codes are inspected by the callers
+    "SIM105",  # contextlib.suppress reads worse for the nested cleanup here
+    # A shell's whole purpose is to start commands from a string; that is the
+    # documented pass-through behaviour, not an oversight. Bundled tools are
+    # launched with shell=False so their arguments are never re-parsed.
+    "S602",
+    "S603",
+    "S605",
+    "S607",
+    # Optional dependencies are imported lazily inside try/except so a missing
+    # package produces an install hint instead of an ImportError traceback.
+    "PLC0415",
+    # Small literal thresholds (latency grades, IP version, exit codes) read
+    # better inline than as named constants.
+    "PLR2004",
+    "PLR0912",
+    # The argparse main() bodies are long but linear: parse, validate, print.
+    "PLR0915",
+    # Shell.execute() is a dispatch chain; splitting it up would hide the order.
+    "PLR0911",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# 0.0.0.0 and the broadcast MAC are exactly what these tools are meant to use:
+# the default-route lookup and the ARP sweep.
+"nscn.py" = ["S104"]
+# cport exists to report wildcard binds; that is the whole point of it.
+"cport.py" = ["S104"]
+"tests/*" = ["S101", "SLF001", "S104"]
+"cbox.cmd" = []

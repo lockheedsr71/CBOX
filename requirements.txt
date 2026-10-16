@@ -1,0 +1,21 @@
+# CBOX runtime dependencies
+#
+#   python -m pip install -r requirements.txt
+#
+# The shell (cbox.py) itself needs none of these; the individual tools do.
+
+rich>=13.0
+colorama>=0.4.6
+requests>=2.31
+psutil>=5.9
+python-whois>=0.9
+
+# Optional
+#   pywin32   -> owner column in cdir.py
+#   scapy     -> nscn.py (LAN/port scanner); also needs Npcap on Windows
+# pywin32>=306; sys_platform == "win32"
+# scapy>=2.5
+
+# Development / build
+# pytest>=8.0
+# pyinstaller>=6.0
